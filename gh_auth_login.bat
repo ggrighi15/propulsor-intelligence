@@ -1,11 +1,18 @@
 
 @echo off
-REM Verifica se GitHub CLI está instalado
+echo ===============================
+echo VERIFICANDO GITHUB CLI (gh)
+echo ===============================
 where gh >nul 2>nul
+
 IF %ERRORLEVEL% NEQ 0 (
-    echo GitHub CLI não encontrado. Baixando...
-    powershell -Command "Invoke-WebRequest -Uri https://github.com/cli/cli/releases/download/v2.0.0/gh_2.0.0_windows_amd64.msi -OutFile gh_cli.msi"
-    msiexec /i gh_cli.msi /quiet
+    echo GitHub CLI não encontrado. Baixando instalador...
+    powershell -Command "Invoke-WebRequest -Uri https://github.com/cli/cli/releases/download/v2.46.0/gh_2.46.0_windows_amd64.msi -OutFile gh_cli.msi"
+    echo Instalando GitHub CLI...
+    msiexec /i gh_cli.msi /quiet /norestart
+    echo Instalado. Reinicie o terminal se necessário.
+) ELSE (
+    echo GitHub CLI já instalado.
 )
 
 echo.
