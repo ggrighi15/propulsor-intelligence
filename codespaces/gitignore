@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.zip
+*.msg
+.DS_Store
+client_secret.json
+service_account.json
+.env

@@ -1,0 +1,32 @@
+[
+    {
+        "#Risco": "B - Possível",
+        "Risco": "Ganho Possível",
+        "Índice": 1
+    },
+    {
+        "#Risco": "A - Provável",
+        "Risco": "Ganho Provável",
+        "Índice": 2
+    },
+    {
+        "#Risco": "C - Remota",
+        "Risco": "Ganho Remoto",
+        "Índice": 3
+    },
+    {
+        "#Risco": "B - Possível",
+        "Risco": "Perda Possível",
+        "Índice": 4
+    },
+    {
+        "#Risco": "A - Provável",
+        "Risco": "Perda Provável",
+        "Índice": 5
+    },
+    {
+        "#Risco": "C - Remota",
+        "Risco": "Perda Remota",
+        "Índice": 6
+    }
+]

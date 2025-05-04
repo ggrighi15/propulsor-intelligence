@@ -1,0 +1,32 @@
+[
+    {
+        "Polo": "Ativo",
+        "Risco": "Ganho Possível",
+        "Índice": 1
+    },
+    {
+        "Polo": "Ativo",
+        "Risco": "Ganho Provável",
+        "Índice": 2
+    },
+    {
+        "Polo": "Ativo",
+        "Risco": "Ganho Remoto",
+        "Índice": 3
+    },
+    {
+        "Polo": "Passivo",
+        "Risco": "Perda Possível",
+        "Índice": 4
+    },
+    {
+        "Polo": "Passivo",
+        "Risco": "Perda Provável",
+        "Índice": 5
+    },
+    {
+        "Polo": "Passivo",
+        "Risco": "Perda Remota",
+        "Índice": 6
+    }
+]

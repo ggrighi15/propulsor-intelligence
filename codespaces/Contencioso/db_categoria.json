@@ -1,0 +1,52 @@
+[
+    {
+        "#Categoria": "Cível",
+        "Categoria": "Administrativo",
+        "ID": 1
+    },
+    {
+        "#Categoria": "Cível",
+        "Categoria": "Cível",
+        "ID": 2
+    },
+    {
+        "#Categoria": "Trabalhista",
+        "Categoria": "Trabalhista",
+        "ID": 3
+    },
+    {
+        "#Categoria": "Trabalhista",
+        "Categoria": "Administrativo Trabalhista",
+        "ID": 4
+    },
+    {
+        "#Categoria": "Cível",
+        "Categoria": "Criminal",
+        "ID": 5
+    },
+    {
+        "#Categoria": "Tributário",
+        "Categoria": "Tributário",
+        "ID": 6
+    },
+    {
+        "#Categoria": "Cível",
+        "Categoria": "Família",
+        "ID": 7
+    },
+    {
+        "#Categoria": "Tributário",
+        "Categoria": "Administrativo Fiscal",
+        "ID": 8
+    },
+    {
+        "#Categoria": "Cível",
+        "Categoria": "Ambiental",
+        "ID": 9
+    },
+    {
+        "#Categoria": "Cível",
+        "Categoria": "Previdenciário",
+        "ID": 10
+    }
+]
