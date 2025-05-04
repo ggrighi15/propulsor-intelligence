@@ -1,0 +1,31 @@
+
+name: 💾 Backup arquivos (.zip, .pdf, .xlsx, .csv) na branch backup
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  backup-files:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🔄 Checkout código
+      uses: actions/checkout@v3
+
+    - name: 📁 Criar pasta temporária para arquivos
+      run: |
+        mkdir backup_temp
+        find . -type f \( -name "*.zip" -o -name "*.pdf" -o -name "*.xlsx" -o -name "*.csv" \) -exec cp {} backup_temp/ \;
+
+    - name: 🚀 Fazer push para a branch backup
+      run: |
+        cd backup_temp
+        git init
+        git config user.name "ggrighi15"
+        git config user.email "ggrighi15@gmail.com"
+        git remote add origin https://github.com/ggrighi15/propulsor-intelligence.git
+        git checkout -b backup
+        git add .
+        git commit -m "🔄 Backup automático de arquivos (.zip, .pdf, .xlsx, .csv)"
+        git push --force origin backup
