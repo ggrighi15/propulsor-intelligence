@@ -1,7 +1,7 @@
 {
   "name": "Propulsor Intelligence",
   "image": "mcr.microsoft.com/devcontainers/python:3.10",
-  "postCreateCommand": "pip install -r requirements.txt && streamlit run propulsor-intelligence/consorcios/painel_consorcios.py --server.headless true --server.port 8501 --server.enableCORS false",
+  "postCreateCommand": "pip install -r requirements.txt && streamlit run app.py --server.headless true",
   "customizations": {
     "vscode": {
       "extensions": [
