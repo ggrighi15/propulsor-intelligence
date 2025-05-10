@@ -1,0 +1,112 @@
+import requests
+import pandas as pd
+from docx import Document
+import openai
+import os
+
+# Configurações e placeholders para chaves e endpoints
+TASKS_API_URL = 'https://api.exemplo.com'  # URL da API do seu aplicativo de tarefas
+TASKS_API_KEY = 'SUA_CHAVE_TASKS'            # Chave de autenticação da API de tarefas
+
+POWERBI_REFRESH_URL = "https://api.powerbi.com/v1.0/myorg/datasets/{dataset_id}/refreshes"
+POWERBI_TOKEN = 'SEU_POWERBI_TOKEN'          # Token para autenticação no Power BI
+
+OPENAI_API_KEY = 'SUA_OPENAI_API_KEY'
+openai.api_key = OPENAI_API_KEY
+
+# Função para extrair tarefas (ajuste conforme a sua API)
+def fetch_tasks():
+    """Extrai tarefas do aplicativo de tarefas via API."""
+    headers = {'Authorization': f'Bearer {TASKS_API_KEY}'}
+    try:
+        response = requests.get(f"{TASKS_API_URL}/tasks", headers=headers)
+        response.raise_for_status()
+        tasks_data = response.json()
+        return tasks_data
+    except Exception as e:
+        print("Erro ao buscar tarefas:", e)
+        # Retornando uma tarefa exemplo para continuidade do fluxo
+        return [{"title": "Tarefa Exemplo", "description": "Descrição exemplo da tarefa."}]
+
+# Função para atualizar um documento Word com as tarefas
+def update_word_doc(tasks):
+    """Cria ou atualiza um documento Word com informações das tarefas."""
+    doc = Document()
+    doc.add_heading('Relatório de Tarefas', level=1)
+    
+    for task in tasks:
+        # Cada tarefa terá um título e uma descrição
+        doc.add_heading(task.get('title', 'Sem título'), level=2)
+        doc.add_paragraph(task.get('description', 'Sem descrição'))
+    
+    doc_file = 'relatorio_tarefas.docx'
+    doc.save(doc_file)
+    print(f"Documento Word '{doc_file}' atualizado com sucesso.")
+
+# Função para atualizar uma planilha Excel com as tarefas
+def update_excel_sheet(tasks):
+    """Cria ou atualiza uma planilha Excel com os dados das tarefas."""
+    df = pd.DataFrame(tasks)
+    excel_file = 'tarefas.xlsx'
+    df.to_excel(excel_file, index=False)
+    print(f"Planilha Excel '{excel_file}' atualizada com sucesso.")
+
+# Função para disparar o refresh de um dashboard no Power BI
+def refresh_powerbi_dashboard():
+    """Dispara a atualização do conjunto de dados no Power BI."""
+    headers = {
+        'Authorization': f'Bearer {POWERBI_TOKEN}',
+        'Content-Type': 'application/json'
+    }
+    # Lembre-se de substituir 'YOUR_DATASET_ID' pelo identificador do seu dataset
+    url = POWERBI_REFRESH_URL.format(dataset_id='YOUR_DATASET_ID')
+    try:
+        response = requests.post(url, json={}, headers=headers)
+        if response.status_code == 202:
+            print("Refresh do Power BI disparado com sucesso.")
+        else:
+            print("Erro ao disparar refresh do Power BI:", response.text)
+    except Exception as e:
+        print("Exceção ao disparar refresh no Power BI:", e)
+
+# Função para gerar uma resposta ou resumo usando ChatGPT
+def generate_chatgpt_response(prompt):
+    """Utiliza a API do ChatGPT para gerar uma resposta a partir de um prompt."""
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        message = response.choices[0].message['content'].strip()
+        return message
+    except Exception as e:
+        print("Erro ao chamar a API do ChatGPT:", e)
+        return ""
+
+def main():
+    # 1. Extrair tarefas do seu aplicativo
+    tasks = fetch_tasks()
+
+    # 2. Atualizar documento Word com as tarefas
+    update_word_doc(tasks)
+    
+    # 3. Atualizar planilha Excel com as tarefas
+    update_excel_sheet(tasks)
+    
+    # 4. Disparar refresh do Power BI
+    refresh_powerbi_dashboard()
+    
+    # 5. Gerar um resumo das tarefas via ChatGPT
+    prompt = "Resuma as tarefas abaixo em um parágrafo:\n" + "\n".join(
+        [f"{task['title']}: {task['description']}" for task in tasks]
+    )
+    summary = generate_chatgpt_response(prompt)
+    print("\nResumo gerado pelo ChatGPT:")
+    print(summary)
+    
+    # 6. (Opcional) Abrir o VS Code na pasta atual
+    # No Windows, descomente a linha abaixo para abrir o VS Code (certifique-se de que o 'code' está no PATH)
+    # os.system("code .")
+
+if __name__ == '__main__':
+    main()
