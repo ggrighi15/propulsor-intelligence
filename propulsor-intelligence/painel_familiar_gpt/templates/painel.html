@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Painel GPT</title>
+</head>
+<body>
+    <h2>Olá, {{ usuario.capitalize() }}</h2>
+    {% if modo == 'senior' %}
+        <style>body { font-size: 1.5em; }</style>
+    {% endif %}
+    <form method="POST">
+        <textarea name="pergunta" rows="4" cols="50"></textarea><br>
+        <button type="submit">Enviar</button>
+    </form>
+    {% if resposta %}
+        <h3>Resposta:</h3>
+        <p>{{ resposta }}</p>
+    {% endif %}
+    <a href="/logout">Sair</a>
+</body>
+</html>
