@@ -1,8 +1,10 @@
-
-streamlit
+streamlit==1.45.0
 pandas
 numpy
 matplotlib
 scikit-learn
-requests
 openpyxl
+python-dateutil
+requests
+plotly
+pydeck
