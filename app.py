@@ -1,10 +1,5 @@
+import streamlit as st
 
-import os
-import streamlit.web.bootstrap
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8501))
-    streamlit.web.bootstrap.run("app.py", "", [], port=port)
 # Configuração inicial da página
 st.set_page_config(
     page_title="Propulsor Intelligence",
