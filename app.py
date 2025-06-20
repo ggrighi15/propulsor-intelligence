@@ -1,58 +1,39 @@
-import streamlit as st
+from flask import Flask, render_template, request, redirect, url_for, session
+from flask_cors import CORS
 
-# Configuração inicial da página
-st.set_page_config(
-    page_title="Propulsor Intelligence",
-    layout="wide",
-    page_icon="🚀"
-)
+app = Flask(__name__)
+CORS(app)
+app.secret_key = 'propulsor_secret_key_2025'
 
-# Estilo visual personalizado com as cores Ulsor
-st.markdown("""
-    <style>
-        html, body, [class*="css"]  {
-            font-family: 'Trebuchet MS', sans-serif;
-        }
-        .sidebar .sidebar-content {
-            background-color: #002e5d;
-        }
-        .css-1d391kg {  /* Título */
-            color: #e30613;
-        }
-        h1, h2, h3, h4 {
-            color: #002e5d !important;
-        }
-        .stButton>button {
-            background-color: #1dd3f8;
-            color: #fff;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 10px;
-        }
-    </style>
-""", unsafe_allow_html=True)
+# Login e senha fixos
+USUARIO_PADRAO = 'gustavo'
+SENHA_PADRAO = 'propulsor2025'
 
-# Título principal
-st.image("Propulsor.png", width=180)
-st.title("Propulsor Intelligence – Painel Geral")
-st.markdown("---")
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-# Lista de módulos com descrição
-modulos = {
-    "painel_familiar_gpt": "👨‍👩‍👧 Painel Familiar GPT – Controle e suporte da IA para sua família.",
-    "consorcios": "📊 Consórcios – Análise de propostas e monitoramento de grupos.",
-    "outro": "🧪 Módulo de Testes – Scripts diversos para integração e protótipos."
-}
+        if username == USUARIO_PADRAO and password == SENHA_PADRAO:
+            session['user'] = username
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('login.html', erro='Usuário ou senha inválidos!')
 
-# Menu lateral com nomes descritivos
-opcao = st.sidebar.radio("Selecione o Módulo", list(modulos.keys()))
+    return render_template('login.html')
 
-# Exibir descrição na área principal
-st.subheader(modulos[opcao])
-st.markdown("---")
+@app.route('/dashboard')
+def dashboard():
+    if 'user' in session:
+        return render_template('dashboard.html', user=session['user'])
+    else:
+        return redirect(url_for('login'))
 
-# Execução do módulo correspondente
-try:
-    exec(open(f"{opcao}/streamlit_app.py").read())
-except Exception as e:
-    st.error(f"❌ Erro ao carregar o módulo `{opcao}`:\n\n{str(e)}")
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('login'))
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
