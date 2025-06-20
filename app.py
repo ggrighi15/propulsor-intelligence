@@ -1,8 +1,18 @@
+# Certifique-se de instalar as dependências antes de rodar:
+# pip install flask flask-cors
+# pip install types-flask  # Opcional, para suporte a tipagem
+
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask_cors import CORS
+try:
+    from flask_cors import CORS  # flask-cors não possui pacote oficial de tipagem
+except ImportError:
+    CORS = None  # type: ignore
+# Se você usa análise de tipo (ex: mypy), instale também:
+# pip install types-flask
 
 app = Flask(__name__)
-CORS(app)
+if CORS:
+    CORS(app)
 app.secret_key = 'propulsor_secret_key_2025'
 
 # Login e senha fixos
@@ -37,3 +47,4 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
