@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../propulsor-intelligence/gestao-patrimonial"
 		}
 	],
 	"settings": {}
