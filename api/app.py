@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
-from inicializar_app import inicializar_app
-from painel import render_painel
+from .inicializar_app import inicializar_app
+from .painel import render_painel
 
 app = FastAPI()
 
@@ -22,7 +22,7 @@ async def executar_tarefa(request: Request):
     body = await request.json()
     tarefa = body.get("tarefa")
     if tarefa == "distribuir_emails":
-        from distribuidor_emails import distribuir_emails
+        from .distribuidor_emails import distribuir_emails
         distribuir_emails()
         return {"status": "ok", "executado": tarefa}
     return {"status": "erro", "mensagem": "Tarefa não reconhecida"}
