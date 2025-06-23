@@ -60,4 +60,6 @@ Com os bancos na pasta `data/`, execute:
 python scripts/criar_propulsor_db.py
 ```
 
-O arquivo final conterá a view `view_clientes` para consulta consolidada.
+O script detecta todos os arquivos `.db` presentes na pasta `data/` e cria
+`propulsor.db` com cada um deles anexado automaticamente. O resultado contém a
+view `view_clientes` para consulta consolidada.

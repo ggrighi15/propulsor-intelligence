@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import sqlite3
+from pathlib import Path
 
 from utils import DATA_DIR
 
@@ -9,30 +10,24 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 PROPULSOR_DB = DATA_DIR / "propulsor.db"
 
-EXTERNAL_DBS = [
-    "pessoas.db",
-    "instituicoes.db",
-    "depositos.db",
-    "requisicoes.db",
-    "procuracoes.db",
-    "contratos.db",
-    "contencioso_atualizado.db",
-]
+# Exclude the main database from the automatic listing
+EXCLUDE = {PROPULSOR_DB.name}
+
+
+def list_databases() -> list[Path]:
+    """Return all .db files in DATA_DIR except the main one."""
+    return [p for p in DATA_DIR.glob("*.db") if p.name not in EXCLUDE]
 
 
 def attach_databases(cursor: sqlite3.Cursor) -> None:
-    for db_name in EXTERNAL_DBS:
-        path = DATA_DIR / db_name
-        if path.exists():
-            alias = path.stem
-            try:
-                cursor.execute("ATTACH DATABASE ? AS ?", (str(path), alias))
-            except sqlite3.OperationalError:
-                alias_safe = alias.replace("\"", "").replace("'", "")
-                cursor.execute(f'ATTACH DATABASE "{path}" AS "{alias_safe}"')
-            logging.info("%s conectado como %s", db_name, alias)
-        else:
-            logging.warning("Arquivo não encontrado: %s", path)
+    for path in list_databases():
+        alias = path.stem
+        try:
+            cursor.execute("ATTACH DATABASE ? AS ?", (str(path), alias))
+        except sqlite3.OperationalError:
+            alias_safe = alias.replace('"', '').replace("'", "")
+            cursor.execute(f'ATTACH DATABASE "{path}" AS "{alias_safe}"')
+        logging.info("%s conectado como %s", path.name, alias)
 
 
 def criar_view_clientes(cursor: sqlite3.Cursor) -> None:
