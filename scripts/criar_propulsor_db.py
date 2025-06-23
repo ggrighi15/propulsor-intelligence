@@ -22,7 +22,6 @@ EXTERNAL_DBS = [
     "procuracoes.db",
     "contratos.db",
     "contencioso_atualizado.db",
-    "procuracoes_particulares.db",
 ]
 
 
@@ -31,9 +30,12 @@ def attach_databases(cursor: sqlite3.Cursor) -> None:
         path = DATA_DIR / db_name
         if path.exists():
             alias = path.stem
-            alias_safe = alias.replace("\"", "").replace("'", "")
-            cursor.execute(f'ATTACH DATABASE "{path}" AS "{alias_safe}"')
-            print(f"✅ {db_name} conectado como {alias_safe}")
+            try:
+                cursor.execute("ATTACH DATABASE ? AS ?", (str(path), alias))
+            except sqlite3.OperationalError:
+                alias_safe = alias.replace("\"", "").replace("'", "")
+                cursor.execute(f'ATTACH DATABASE "{path}" AS "{alias_safe}"')
+            print(f"✅ {db_name} conectado como {alias}")
         else:
             print(f"❌ Arquivo não encontrado: {path}")
 
