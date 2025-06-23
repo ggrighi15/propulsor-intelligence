@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Estrutura para deploy no Codespaces
-=======
 # 🚀 Propulsor Intelligence
 
 ## Estrutura para Deploy no Codespaces
@@ -19,4 +16,4 @@ Este repositório contém a infraestrutura modular do **Propulsor**, já integra
 ### ▶️ Execução direta
 ```bash
 start run_propulsor.bat
->>>>>>> c95de31 (Atualização completa do Codespace para o repositório remoto)
+```
