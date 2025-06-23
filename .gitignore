@@ -19,6 +19,7 @@
 !scripts/**
 !data/
 !data/**
+!config.py
 !painel/
 !painel/**
 !codespaces/

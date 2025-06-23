@@ -1,7 +1,7 @@
 {
   "name": "Propulsor Intelligence",
   "image": "mcr.microsoft.com/devcontainers/python:3.10",
-  "postCreateCommand": "pip install -r requirements.txt && streamlit run app.py --server.headless true",
+  "postCreateCommand": "pip install -r requirements.txt && python app.py",
   "customizations": {
     "vscode": {
       "extensions": [

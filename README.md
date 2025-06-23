@@ -17,7 +17,11 @@ Crie um arquivo `.env` baseado em `.env.example` contendo:
 APP_SECRET_KEY=<sua-chave>
 DEFAULT_USERNAME=<usuario>
 DEFAULT_PASSWORD=<senha>
+OPENAI_API_KEY=<sua-chave-openai>
+WHATSAPP_TOKEN=<seu-token-whatsapp>
 ```
+
+O módulo `config.py` lê essas variáveis para inicializar o Flask.
 
 ### ▶️ Execução direta
 ```bash

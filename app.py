@@ -4,7 +4,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for, session
 import os
-from dotenv import load_dotenv
+from config import get_config
 try:
     from flask_cors import CORS  # flask-cors não possui pacote oficial de tipagem
 except ImportError:
@@ -12,14 +12,14 @@ except ImportError:
 # Se você usa análise de tipo (ex: mypy), instale também:
 # pip install types-flask
 
-load_dotenv()
+config = get_config()
 app = Flask(__name__)
 if CORS:
     CORS(app)
-app.secret_key = os.getenv('APP_SECRET_KEY', 'propulsor_secret_key_2025')
+app.secret_key = config['SECRET_KEY']
 
-USUARIO_PADRAO = os.getenv('DEFAULT_USERNAME', 'gustavo')
-SENHA_PADRAO = os.getenv('DEFAULT_PASSWORD', 'propulsor2025')
+USUARIO_PADRAO = config['DEFAULT_USERNAME']
+SENHA_PADRAO = config['DEFAULT_PASSWORD']
 
 @app.route('/')
 def home():

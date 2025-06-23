@@ -23,5 +23,5 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: ✅ Verificar Streamlit App
-      run: streamlit run app.py --server.headless true --server.port 8501 || echo "Verificação completa"
+    - name: ✅ Verificar aplicação
+      run: python -m py_compile app.py

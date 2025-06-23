@@ -1,15 +1,15 @@
 from flask import Flask, render_template, request, redirect, session
 import openai
-from dotenv import load_dotenv
 import os
-load_dotenv()
+from config import get_config
 import sqlite3
 
+config = get_config()
 app = Flask(__name__)
-app.secret_key = 'sua_chave_secreta_aqui'
+app.secret_key = config['SECRET_KEY']
 
 # Config da OpenAI
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = config['OPENAI_API_KEY']
 
 USERS = {
     'regina': {'senha': 'regina123', 'modo': 'senior'},
