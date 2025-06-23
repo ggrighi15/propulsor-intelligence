@@ -17,6 +17,9 @@
 !services/**
 !scripts/
 !scripts/**
+!importador_espader.bat
+!consolidar_contencioso.bat
+!criar_propulsor_db.bat
 !data/
 !data/**
 !painel/

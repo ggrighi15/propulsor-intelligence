@@ -29,3 +29,30 @@ Ou no Linux:
 ```bash
 ./start.sh
 ```
+
+### 📂 Importar relatórios Espaider
+Coloque os arquivos Excel na pasta `emails/` e execute:
+
+```bash
+python scripts/importador_espader.py
+```
+
+O script gera `data/propulsor.db` com as tabelas unificadas para consulta.
+
+### 📥 Consolidar bancos do contencioso
+Coloque os arquivos `.db` adicionais na pasta `data/` e execute:
+
+```bash
+python scripts/consolidar_contencioso.py
+```
+
+Será criado `data/contencioso_atualizado.db` mesclando todas as tabelas.
+
+### 🔗 Gerar `propulsor.db` conectado
+Com os bancos na pasta `data/`, execute:
+
+```bash
+python scripts/criar_propulsor_db.py
+```
+
+O arquivo final conterá a view `view_clientes` para consulta consolidada.
