@@ -1,2 +1,2 @@
 #!/bin/bash
-streamlit run app.py --server.port=$PORT --server.address=0.0.0.0
+gunicorn -b 0.0.0.0:${PORT:-5000} app:app

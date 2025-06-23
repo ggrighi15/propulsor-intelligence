@@ -9,19 +9,30 @@
 !api/**
 !requirements.txt
 !Procfile
-
-# ✅ Liberação explícita do painel familiar
-!painel_familiar_gpt/
-!painel_familiar_gpt/**
+!templates/
+!templates/**
+!bots/
+!bots/**
+!services/
+!services/**
+!scripts/
+!scripts/**
+!data/
+!data/**
+!painel/
+!painel/**
+!codespaces/
+!codespaces/**
 
 # Ignorar arquivos de ambiente
 .env
-painel_familiar_gpt/.env
+!.env.example
+painel/familiar_gpt/.env
 
 # Ignorar bancos de dados locais
 *.db
 *.sqlite3
-painel_familiar_gpt/*.db
+painel/familiar_gpt/*.db
 
 # Cache de Python
 __pycache__/

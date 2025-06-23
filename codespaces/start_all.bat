@@ -3,7 +3,7 @@ REM Ativa o ambiente virtual, executa painel e inicia sincronização automátic
 call .\venv\Scripts\activate.bat
 
 REM Executa o painel principal
-start "" streamlit run app.py
+start "" python app.py
 
 REM Inicia o auto sync do repositório
 start "" cmd /c auto_sync.bat

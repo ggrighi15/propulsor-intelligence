@@ -10,3 +10,6 @@ plotly
 pydeck
 python-docx
 git+https://github.com/openai/whisper.git
+Flask
+flask-cors
+python-dotenv

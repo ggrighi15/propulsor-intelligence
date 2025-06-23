@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Painel - Propulsor</title>
+</head>
+<body>
+    <h2>Olá, {{ user }}</h2>
+    <h3>Módulos disponíveis</h3>
+    {% for categoria, itens in modulos.items() %}
+    <h4>{{ categoria }}</h4>
+    <ul>
+        {% for item in itens %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+    <a href="/logout">Sair</a>
+</body>
+</html>
