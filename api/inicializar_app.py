@@ -3,7 +3,7 @@ def inicializar_app():
 
     # Exemplo de chamadas reais
     try:
-        from distribuidor_emails import distribuir_emails
+        from .distribuidor_emails import distribuir_emails
         distribuir_emails()
     except Exception as e:
         print(f"Erro ao distribuir e-mails: {e}")
