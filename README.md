@@ -37,6 +37,8 @@ Coloque os arquivos Excel na pasta `emails/` e execute:
 python scripts/importador_espader.py
 ```
 
+Nota: O script se chama `importador_espader.py` (com "espader" por convenção de nomes minúsculos). No texto, "Espaider" refere-se ao sistema de origem.
+
 O script gera `data/propulsor.db` com as tabelas unificadas para consulta.
 
 ### 📥 Consolidar bancos do contencioso

@@ -16,25 +16,17 @@ EMAIL_DIR = ROOT_DIR / 'emails'
 BASE_DIR.mkdir(parents=True, exist_ok=True)
 EMAIL_DIR.mkdir(parents=True, exist_ok=True)
 
-excel_files = {
-    'pessoas': EMAIL_DIR / 'Smart Report - Pessoas.xlsx',
-    'instituicoes': EMAIL_DIR / 'Smart Report - Instituicoes.xlsx',
-    'depositos': EMAIL_DIR / 'Smart Report - Depósitos.xlsx',
-    'requisicoes': EMAIL_DIR / 'Requisições.xlsx',
-    'contratos': EMAIL_DIR / 'BDContratos.xlsx',
-    'contencioso': EMAIL_DIR / 'Relatório Mensal _ Contencioso.xlsx',
-    'procuracoes_publicas': EMAIL_DIR / 'Relatório _ Procurações Públicas.xlsx',
-    'procuracoes_particulares': EMAIL_DIR / 'Relatório _ Procurações Particulares.xlsx'
-}
-
-tabelas = {
-    'pessoas': ['pessoas'],
-    'instituicoes': ['instituicoes'],
-    'depositos': ['depositos'],
-    'requisicoes': ['requisicoes'],
-    'contratos': ['contratos'],
-    'contencioso': ['contencioso'],
-    'procuracoes': ['procuracoes_publicas', 'procuracoes_particulares']
+SOURCE_MAP = {
+    'pessoas': ['Smart Report - Pessoas.xlsx'],
+    'instituicoes': ['Smart Report - Instituicoes.xlsx'],
+    'depositos': ['Smart Report - Depósitos.xlsx'],
+    'requisicoes': ['Requisições.xlsx'],
+    'contratos': ['BDContratos.xlsx'],
+    'contencioso': ['Relatório Mensal _ Contencioso.xlsx'],
+    'procuracoes': [
+        'Relatório _ Procurações Públicas.xlsx',
+        'Relatório _ Procurações Particulares.xlsx',
+    ],
 }
 
 DB_PATH = BASE_DIR / 'propulsor.db'
@@ -42,10 +34,12 @@ DB_PATH = BASE_DIR / 'propulsor.db'
 
 def limpeza_espaider(caminho_excel: Path) -> pd.DataFrame | None:
     try:
-        df = pd.read_excel(caminho_excel, skiprows=4)
-        df.dropna(axis=1, how='all', inplace=True)
-        campos_chave = ['Pasta', 'Número do Processo', 'ID', 'Código']
-        for campo in campos_chave:
+        df = (
+            pd.read_excel(caminho_excel, skiprows=4)
+            .dropna(axis=1, how='all')
+        )
+        campos = ['Pasta', 'Número do Processo', 'ID', 'Código']
+        for campo in campos:
             if campo in df.columns:
                 df = df[df[campo].notnull()]
         df = df[~df.iloc[:, 0].astype(str).str.contains('Total', na=False)]
@@ -57,10 +51,10 @@ def limpeza_espaider(caminho_excel: Path) -> pd.DataFrame | None:
 
 def importar():
     with sqlite3.connect(DB_PATH) as conn:
-        for tabela, chaves in tabelas.items():
+        for tabela, arquivos in SOURCE_MAP.items():
             frames = []
-            for chave in chaves:
-                caminho_excel = excel_files[chave]
+            for nome in arquivos:
+                caminho_excel = EMAIL_DIR / nome
                 if caminho_excel.exists():
                     print(f'Importando {caminho_excel} para {tabela}...')
                     df = limpeza_espaider(caminho_excel)

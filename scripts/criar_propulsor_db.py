@@ -31,8 +31,9 @@ def attach_databases(cursor: sqlite3.Cursor) -> None:
         path = DATA_DIR / db_name
         if path.exists():
             alias = path.stem
-            cursor.execute(f"ATTACH DATABASE '{path}' AS {alias}")
-            print(f"✅ {db_name} conectado como {alias}")
+            alias_safe = alias.replace("\"", "").replace("'", "")
+            cursor.execute(f'ATTACH DATABASE "{path}" AS "{alias_safe}"')
+            print(f"✅ {db_name} conectado como {alias_safe}")
         else:
             print(f"❌ Arquivo não encontrado: {path}")
 

@@ -30,13 +30,17 @@ TARGET_DB = DATA_DIR / "contencioso_atualizado.db"
 
 def copy_base() -> None:
     if SOURCE_DB.exists():
-        shutil.copy(SOURCE_DB, TARGET_DB)
+        try:
+            shutil.copy(SOURCE_DB, TARGET_DB)
+        except Exception as e:
+            print(f"❌ Erro ao copiar o DB: {e}")
+            print("💡 Verifique se o arquivo está aberto ou bloqueado.")
     else:
         Path(TARGET_DB).touch()
 
 
 def sanitize_name(name: str) -> str:
-    return f"mes_{name}" if re.match(r"^\d", name) else name
+    return f"mes_{name}" if name and name[0].isdigit() else name
 
 
 def append_tables(db_path: Path) -> None:
@@ -45,7 +49,8 @@ def append_tables(db_path: Path) -> None:
         tables = conn_src.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
         for (table,) in tables:
             df = pd.read_sql_query(f'SELECT * FROM "{table}"', conn_src)
-            dest_name = f"{prefix}_{sanitize_name(table)}"
+            sanitized = sanitize_name(table)
+            dest_name = f"{prefix}_{sanitized}"
             df.to_sql(dest_name, conn_dest, if_exists="replace", index=False)
             print(f"✅ Tabela '{table}' de '{prefix}' importada como '{dest_name}'")
 
