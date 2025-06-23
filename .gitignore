@@ -17,6 +17,11 @@
 !services/**
 !scripts/
 !scripts/**
+!utils.py
+!importador_espader.bat
+!consolidar_contencioso.bat
+!criar_propulsor_db.bat
+!netlify.toml
 !data/
 !data/**
 !painel/
