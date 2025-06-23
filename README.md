@@ -4,16 +4,28 @@
 
 Este repositório contém a infraestrutura modular do **Propulsor**, já integrada para rodar direto no Codespaces ou localmente via `.bat`.
 
-### ✅ Módulos disponíveis
-- **consorcios/**: painel de gestão de propostas
-- **painel_contencioso_propulsor/**: painel jurídico por pasta e risco
-- **painel_familiar_gpt/**: painel com GPT-4o voltado ao núcleo familiar
-- **Teapruma_bot/**: análise emocional e alerta preventivo
-- **Teliga_bot/**: jurídico investigativo e rastreio
-- **Teacher_Emma/**: educação interativa com IA
-- **Eva_pro/**: IA de vendas com apelo emocional
+### ✅ Estrutura consolidada
+- **bots/**: Teliga_bot, Teapruma_bot, Teacher_Emma e Eva_pro
+- **services/**: consorcios, cadastro_pessoas, contencioso, contratos, procuracoes,
+  requisicoes, societario, financas_pessoais e ciencia_dados
+- **painel/**: familiar_gpt e consorcios
+
+### 🔐 Variáveis de ambiente
+Crie um arquivo `.env` baseado em `.env.example` contendo:
+
+```
+APP_SECRET_KEY=<sua-chave>
+DEFAULT_USERNAME=<usuario>
+DEFAULT_PASSWORD=<senha>
+```
 
 ### ▶️ Execução direta
 ```bash
 start run_propulsor.bat
+```
+
+Ou no Linux:
+
+```bash
+./start.sh
 ```

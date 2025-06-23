@@ -9,5 +9,5 @@ call venv\Scripts\activate
 REM Instala dependências
 pip install -r requirements.txt
 
-REM Executa o app Streamlit
-streamlit run app.py --server.headless true
+REM Executa o app Flask
+python app.py
