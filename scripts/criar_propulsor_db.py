@@ -1,16 +1,11 @@
 from __future__ import annotations
 
-import os
+import logging
 import sqlite3
-from pathlib import Path
 
-from dotenv import load_dotenv
+from utils import DATA_DIR
 
-load_dotenv()
-
-ROOT_DIR = Path(os.getenv("PROPULSOR_ROOT", Path(__file__).resolve().parents[1]))
-DATA_DIR = ROOT_DIR / "data"
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 PROPULSOR_DB = DATA_DIR / "propulsor.db"
 
@@ -35,9 +30,9 @@ def attach_databases(cursor: sqlite3.Cursor) -> None:
             except sqlite3.OperationalError:
                 alias_safe = alias.replace("\"", "").replace("'", "")
                 cursor.execute(f'ATTACH DATABASE "{path}" AS "{alias_safe}"')
-            print(f"✅ {db_name} conectado como {alias}")
+            logging.info("%s conectado como %s", db_name, alias)
         else:
-            print(f"❌ Arquivo não encontrado: {path}")
+            logging.warning("Arquivo não encontrado: %s", path)
 
 
 def criar_view_clientes(cursor: sqlite3.Cursor) -> None:
@@ -48,7 +43,7 @@ def criar_view_clientes(cursor: sqlite3.Cursor) -> None:
         SELECT * FROM instituicoes.instituicoes
     """
     cursor.execute(query)
-    print("✅ View 'view_clientes' criada")
+    logging.info("View 'view_clientes' criada")
 
 
 def criar_propulsor_db() -> None:
@@ -59,7 +54,7 @@ def criar_propulsor_db() -> None:
             criar_view_clientes(cursor)
         finally:
             conn.commit()
-    print(f"🏁 propulsor.db criado em {PROPULSOR_DB}")
+    logging.info("propulsor.db criado em %s", PROPULSOR_DB)
 
 
 if __name__ == "__main__":

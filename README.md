@@ -17,6 +17,9 @@ Crie um arquivo `.env` baseado em `.env.example` contendo:
 APP_SECRET_KEY=<sua-chave>
 DEFAULT_USERNAME=<usuario>
 DEFAULT_PASSWORD=<senha>
+
+# Caminho opcional para o repositório
+PROPULSOR_ROOT=/caminho/para/propulsor-intelligence
 ```
 
 ### ▶️ Execução direta

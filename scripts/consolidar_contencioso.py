@@ -1,19 +1,14 @@
 from __future__ import annotations
 
-import os
-import re
+import logging
 import shutil
 import sqlite3
 from pathlib import Path
 
 import pandas as pd
-from dotenv import load_dotenv
+from utils import DATA_DIR
 
-load_dotenv()
-
-ROOT_DIR = Path(os.getenv("PROPULSOR_ROOT", Path(__file__).resolve().parents[1]))
-DATA_DIR = ROOT_DIR / "data"
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 # Conjuntos adicionais de bancos a consolidar
 EXTRA_DBS = [
@@ -33,14 +28,10 @@ def copy_base() -> None:
         try:
             shutil.copy(SOURCE_DB, TARGET_DB)
         except Exception as e:
-            print(f"❌ Erro ao copiar o DB: {e}")
-            print("💡 Verifique se o arquivo está aberto ou bloqueado.")
+            logging.error("Erro ao copiar o DB: %s", e)
+            logging.warning("Verifique se o arquivo está aberto ou bloqueado.")
     else:
         Path(TARGET_DB).touch()
-
-
-def sanitize_name(name: str) -> str:
-    return f"mes_{name}" if name and name[0].isdigit() else name
 
 
 def append_tables(db_path: Path) -> None:
@@ -49,10 +40,10 @@ def append_tables(db_path: Path) -> None:
         tables = conn_src.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
         for (table,) in tables:
             df = pd.read_sql_query(f'SELECT * FROM "{table}"', conn_src)
-            sanitized = sanitize_name(table)
+            sanitized = f"mes_{table}" if table and table[0].isdigit() else table
             dest_name = f"{prefix}_{sanitized}"
             df.to_sql(dest_name, conn_dest, if_exists="replace", index=False)
-            print(f"✅ Tabela '{table}' de '{prefix}' importada como '{dest_name}'")
+            logging.info("Tabela '%s' de '%s' importada como '%s'", table, prefix, dest_name)
 
 
 def consolidar() -> None:
@@ -61,8 +52,8 @@ def consolidar() -> None:
         if db.exists():
             append_tables(db)
         else:
-            print(f"❌ Arquivo não encontrado: {db}")
-    print("🏁 Consolidação concluída.")
+            logging.warning("Arquivo não encontrado: %s", db)
+    logging.info("Consolidação concluída")
 
 
 if __name__ == "__main__":
