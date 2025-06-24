@@ -20,6 +20,7 @@ DEFAULT_PASSWORD=<senha>
 
 # Caminho opcional para o repositório
 PROPULSOR_ROOT=/caminho/para/propulsor-intelligence
+ESPADER_DB_PATH=/caminho/para/espader_db.xlsx  # opcional
 ```
 
 ### ▶️ Execução direta
