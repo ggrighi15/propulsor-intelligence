@@ -1,0 +1,65 @@
+<!-- Dashboard: Cards de Módulos -->
+<div id="dashboard-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; padding: 16px;">
+  <!-- Cards serão injetados via JS -->
+</div>
+
+<script>
+// Mapeamento dos módulos e ícones
+const modules = [
+  { key: 'pessoas',       icon: '👥', color: '#007dff', title: 'Pessoas' },
+  { key: 'contratos',     icon: '📄', color: '#7b2ff2', title: 'Contratos' },
+  { key: 'instituicoes',  icon: '🏢', color: '#009688', title: 'Instituições' },
+  { key: 'requisicoes',   icon: '📋', color: '#ffc107', title: 'Requisições' },
+  { key: 'contencioso',   icon: '⚖️', color: '#e65100', title: 'Contencioso' },
+  { key: 'procuracoes',   icon: '✍️', color: '#673ab7', title: 'Procuracões' },
+  { key: 'depositos',     icon: '💰', color: '#00bfae', title: 'Depósitos' },
+  { key: 'consorcios',    icon: '💸', color: '#e91e63', title: 'Consórcios' }
+];
+
+// Busca totais de cada módulo da API
+async function loadDashboardCards() {
+  const apiBase = '/api/crm'; // ou https://propulsor-backend.onrender.com/api/crm
+
+  // Endpoints dos módulos
+  const endpoints = {
+    pessoas:       `${apiBase}/pessoas?per_page=1`,
+    contratos:     `${apiBase}/contratos?per_page=1`,
+    instituicoes:  `${apiBase}/instituicoes?per_page=1`,
+    requisicoes:   `${apiBase}/requisicoes?per_page=1`,
+    contencioso:   `${apiBase}/contencioso?per_page=1`,
+    procuracoes:   `${apiBase}/procuracoes?per_page=1`,
+    depositos:     `${apiBase}/depositos?per_page=1`,
+    consorcios:    `${apiBase}/consorcios?per_page=1`,
+  };
+
+  let cardsHTML = '';
+
+  for (const m of modules) {
+    try {
+      const res = await fetch(endpoints[m.key]);
+      const data = await res.json();
+      const total = (data.pagination && data.pagination.total) ? data.pagination.total : (data.total || 0);
+      cardsHTML += `
+        <div onclick="window.location='/${m.key}'" style="background: #fff; border-radius: 20px; box-shadow: 0 2px 8px #0001; padding: 28px 16px; text-align:center; cursor:pointer; transition:box-shadow .2s; border-top: 4px solid ${m.color};">
+          <div style="font-size: 38px; margin-bottom: 12px; color: ${m.color}">${m.icon}</div>
+          <div style="font-size: 19px; font-weight:700; color: #111">${m.title}</div>
+          <div style="font-size: 32px; margin-top: 10px; font-weight: 900; color: #333;">${total}</div>
+        </div>
+      `;
+    } catch {
+      cardsHTML += `
+        <div style="background:#eee; border-radius:20px; box-shadow:0 2px 8px #0001; padding:28px 16px; text-align:center; color:#aaa">
+          <div style="font-size:38px; margin-bottom:12px;">${m.icon}</div>
+          <div style="font-size:19px;font-weight:700;">${m.title}</div>
+          <div style="font-size:32px;margin-top:10px;font-weight:900;">0</div>
+        </div>
+      `;
+    }
+  }
+
+  document.getElementById('dashboard-cards').innerHTML = cardsHTML;
+}
+
+// Ao carregar a página, monta os cards
+window.addEventListener('DOMContentLoaded', loadDashboardCards);
+</script>
