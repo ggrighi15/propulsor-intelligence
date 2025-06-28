@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import sqlite3
 from pathlib import Path
 
@@ -23,6 +24,8 @@ SOURCE_MAP = {
 }
 
 DB_PATH = DATA_DIR / 'propulsor.db'
+# Permite definir caminho customizado para a planilha consolidada
+ESPADER_FILE = Path(os.getenv('ESPADER_DB_PATH', DATA_DIR / 'espader_db.xlsx'))
 
 
 def limpeza_espaider(caminho_excel: Path) -> pd.DataFrame | None:
@@ -48,6 +51,10 @@ def importar():
             frames = []
             for nome in arquivos:
                 caminho_excel = EMAIL_DIR / nome
+                if not caminho_excel.exists():
+                    alt_path = DATA_DIR / nome
+                    if alt_path.exists():
+                        caminho_excel = alt_path
                 if caminho_excel.exists():
                     logging.info('Importando %s para %s...', caminho_excel, tabela)
                     df = limpeza_espaider(caminho_excel)
