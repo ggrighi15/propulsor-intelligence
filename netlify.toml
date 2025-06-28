@@ -1,8 +1,11 @@
+# netlify.toml
 [build]
-  command = "echo 'skip build for propulsor-intelligence'"
-  publish = "."
+  base = "propulsor-crm"            # pasta onde está o projeto React/Vite
+  publish = "propulsor-crm/dist"    # saída padrão do Vite
+  command = "npm install && npm run build"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[dev]
+  command = "npm run dev"
+
+[functions]
+  directory = "netlify/functions"

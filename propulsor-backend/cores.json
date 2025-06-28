@@ -1,0 +1,17 @@
+{
+  "name": "Propulsor",
+  "dataColors": [
+    "#000100",
+    "#5001b4",
+    "#f7f7f7",
+    "#65b1ff",
+    "#007dff",
+    "#78aadd",
+    "#0627ff",
+    "#cbcaca",
+    "#ffff00"
+  ],
+  "background": "#000100",
+  "foreground": "#f7f7f7",
+  "tableAccent": "#007dff"
+}
