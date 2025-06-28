@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Propulsor - Sistema de Gestão</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #000100;
+            --secondary-color: #5001b4;
+            --accent-color: #007dff;
+            --light-color: #f7f7f7;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --hover-color: #65b1ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .nav-tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-color);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .nav-tab:hover {
+            color: var(--hover-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .data-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: var(--accent-color);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-input {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            outline: none;
+        }
+
+        .filter-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--hover-color);
+        }
+
+        .table-content {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 2rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover, .page-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-container {
+                margin: 0;
+                max-width: 100%;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .nav-tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .table-controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>CRM Propulsor</span>
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Buscar pessoas, contratos..." id="globalSearch">
+            </div>
+            <div class="user-menu">
+                <i class="fas fa-user-circle" style="font-size: 2rem;"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="dashboard">
+                <i class="fas fa-chart-dashboard"></i> Dashboard
+            </button>
+            <button class="nav-tab" data-tab="pessoas">
+                <i class="fas fa-users"></i> Pessoas
+            </button>
+            <button class="nav-tab" data-tab="contratos">
+                <i class="fas fa-file-contract"></i> Contratos
+            </button>
+            <button class="nav-tab" data-tab="instituicoes">
+                <i class="fas fa-building"></i> Instituições
+            </button>
+            <button class="nav-tab" data-tab="requisicoes">
+                <i class="fas fa-clipboard-list"></i> Requisições
+            </button>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <div class="dashboard-grid" id="statsGrid">
+                <!-- Stats cards will be loaded here -->
+            </div>
+            
+            <div class="chart-container">
+                <h3 style="margin-bottom: 1rem;">Contratos por Situação</h3>
+                <canvas id="contratosChart" width="400" height="200"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <h3 style="margin-bottom: 1rem;">Pessoas por Tipo</h3>
+                <canvas id="pessoasChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Pessoas Tab -->
+        <div class="tab-content" id="pessoas">
+            <div class="data-table">
+                <div class="table-header">
+                    <div class="table-title">Gestão de Pessoas</div>
+                    <div class="table-controls">
+                        <input type="text" class="filter-input" placeholder="Filtrar pessoas..." id="pessoasFilter">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+                <div class="table-content" id="pessoasTable">
+                    <!-- Table content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Contratos Tab -->
+        <div class="tab-content" id="contratos">
+            <div class="data-table">
+                <div class="table-header">
+                    <div class="table-title">Gestão de Contratos</div>
+                    <div class="table-controls">
+                        <input type="text" class="filter-input" placeholder="Filtrar contratos..." id="contratosFilter">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+                <div class="table-content" id="contratosTable">
+                    <!-- Table content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Instituições Tab -->
+        <div class="tab-content" id="instituicoes">
+            <div class="data-table">
+                <div class="table-header">
+                    <div class="table-title">Gestão de Instituições</div>
+                    <div class="table-controls">
+                        <input type="text" class="filter-input" placeholder="Filtrar instituições..." id="instituicoesFilter">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+                <div class="table-content" id="instituicoesTable">
+                    <!-- Table content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Requisições Tab -->
+        <div class="tab-content" id="requisicoes">
+            <div class="data-table">
+                <div class="table-header">
+                    <div class="table-title">Gestão de Requisições</div>
+                    <div class="table-controls">
+                        <input type="text" class="filter-input" placeholder="Filtrar requisições..." id="requisicoesFilter">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+                <div class="table-content" id="requisicoesTable">
+                    <!-- Table content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
