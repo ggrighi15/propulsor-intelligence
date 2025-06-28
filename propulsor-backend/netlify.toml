@@ -1,8 +1,11 @@
 # netlify.toml
+
 [build]
-  base = "propulsor-crm"            # pasta onde está o projeto React/Vite
-  publish = "propulsor-crm/dist"    # saída padrão do Vite
-  command = "npm install && npm run build"
+  command = "bash download_sqlite_bancos.sh && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_ENV = "production"
 
 [dev]
   command = "npm run dev"
