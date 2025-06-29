@@ -1,5 +1,3 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
-
 # Ignora tudo por padrão
 *
 
@@ -30,8 +28,8 @@
 !codespaces/**
 
 # Ignorar arquivos de ambiente
-!.env
-!.env.example
+.env                # <-- .env NUNCA vai pro repo!
+!.env.example       # <-- .env.example SEMPRE vai pro repo (modelo)
 painel/familiar_gpt/.env
 
 # Ignorar bancos de dados locais
