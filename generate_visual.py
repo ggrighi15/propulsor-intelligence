@@ -1,17 +1,16 @@
-
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
 
 # Criar imagem branca
-img = Image.new('RGB', (800, 400), color=(255, 255, 255))
+img = Image.new("RGB", (800, 400), color=(255, 255, 255))
 d = ImageDraw.Draw(img)
 
 # Texto principal
 title = "Propulsor Intelligence"
 subtitle = "Upload automático gerado por GitHub Actions"
-timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# Fonte (usar padrão do sistema)
+# Tenta carregar 'arial.ttf' e recorre à fonte padrão se indisponível
 try:
     font_title = ImageFont.truetype("arial.ttf", 32)
     font_sub = ImageFont.truetype("arial.ttf", 20)
