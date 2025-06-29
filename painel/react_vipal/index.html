@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Consultas Propulsor</title>
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    function App() {
+      const [dados, setDados] = React.useState([]);
+      React.useEffect(() => {
+        fetch('/api/consultas/vipal')
+          .then(r => r.json())
+          .then(setDados);
+      }, []);
+      return (
+        <div>
+          <h2>Resultados Borrachas Vipal</h2>
+          <pre>{JSON.stringify(dados, null, 2)}</pre>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
