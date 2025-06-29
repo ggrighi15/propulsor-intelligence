@@ -2,7 +2,8 @@
 # pip install flask flask-cors
 # pip install types-flask  # Opcional, para suporte a tipagem
 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
+from services.contencioso.consultas import bp as consultas_bp
 import os
 from dotenv import load_dotenv
 try:
@@ -13,10 +14,11 @@ except ImportError:
 # pip install types-flask
 
 load_dotenv()
-app = Flask(__name__)
+app = Flask(__name__, static_folder='painel')
 if CORS:
     CORS(app)
 app.secret_key = os.getenv('APP_SECRET_KEY', 'propulsor_secret_key_2025')
+app.register_blueprint(consultas_bp)
 
 USUARIO_PADRAO = os.getenv('DEFAULT_USERNAME', 'gustavo')
 SENHA_PADRAO = os.getenv('DEFAULT_PASSWORD', 'propulsor2025')
@@ -24,6 +26,10 @@ SENHA_PADRAO = os.getenv('DEFAULT_PASSWORD', 'propulsor2025')
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/react-vipal')
+def react_vipal():
+    return send_from_directory('painel/react_vipal', 'index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
