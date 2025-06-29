@@ -61,3 +61,18 @@ python scripts/criar_propulsor_db.py
 ```
 
 O arquivo final conterá a view `view_clientes` para consulta consolidada.
+
+### 📊 Exemplo de PBIX
+Um modelo Power BI está disponível em `data/propulsor_template.pbix`.
+Abra o arquivo no Power BI Desktop e ajuste as conexões para apontar para `data/propulsor.db`.
+
+### 🕵️ Verificar bancos e duplicidades
+Execute `python -m scripts.analisar_dbs` para listar todas as tabelas e contagens de registros dos bancos SQLite presentes em `data/`.
+
+Para checar valores duplicados em uma tabela específica, use:
+
+```bash
+python -m scripts.duplicidades nome_da_tabela coluna_chave
+```
+
+O script exibirá os valores repetidos e suas ocorrências para cada arquivo `.db` encontrado.
