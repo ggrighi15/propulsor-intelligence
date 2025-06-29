@@ -30,7 +30,6 @@
 !codespaces/**
 
 # Ignorar arquivos de ambiente
-!.emv
 .env
 !.env.example
 painel/familiar_gpt/.env
