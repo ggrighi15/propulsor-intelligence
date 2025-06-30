@@ -76,3 +76,6 @@ python -m scripts.duplicidades nome_da_tabela coluna_chave
 ```
 
 O script exibirá os valores repetidos e suas ocorrências para cada arquivo `.db` encontrado.
+
+### 📚 Endpoints da API
+Consulte `docs/endpoints.md` para detalhes dos endpoints disponíveis e exemplo de integração.

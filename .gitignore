@@ -26,6 +26,8 @@
 !painel/**
 !codespaces/
 !codespaces/**
+!docs/
+!docs/**
 
 # Ignorar arquivos de ambiente
 .env                # <-- .env NUNCA vai pro repo!
