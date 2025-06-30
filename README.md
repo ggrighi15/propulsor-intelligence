@@ -76,3 +76,21 @@ python -m scripts.duplicidades nome_da_tabela coluna_chave
 ```
 
 O script exibirá os valores repetidos e suas ocorrências para cada arquivo `.db` encontrado.
+
+### 📚 Endpoints da API
+Consulte `docs/endpoints.md` para detalhes dos endpoints disponíveis e exemplo de integração.
+
+### ⚡ CRUD Rápido
+Execute `python propulsor-backend/app.py` para subir um backend Flask com todos os bancos da pasta `database/`.
+
+Endpoints disponíveis por tabela:
+
+```
+GET    /api/<tabela>
+GET    /api/<tabela>/<id>
+POST   /api/<tabela>
+PUT    /api/<tabela>/<id>
+DELETE /api/<tabela>/<id>
+```
+
+Os arquivos HTML em `propulsor-backend/static/` demonstram como consumir a API via `fetch`.
